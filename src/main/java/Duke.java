@@ -7,11 +7,15 @@ public class Duke {
             Chat.greet();
             while (true) {
                 sentence = sc.nextLine();
-                if (sentence.equals("bye")) {
+                if (sentence.isEmpty()) {
+                    System.out.println("I'm not sure if I get what you've said.");
+                } else if (sentence.equals("bye")) {
                     Chat.bye();
                     break;
                 } else if (sentence.equals("list")) {
                     Chat.list();
+                } else if (sentence.startsWith("done")) {
+                    Chat.done(sentence);
                 } else {
                     Chat.add(sentence);
                 }
@@ -21,13 +25,12 @@ public class Duke {
 }
 
 class Chat {
-    static String[] texts = new String[100];
-    static int textIndex = 0;
+    static TaskBank taskBank = new TaskBank();
 
     static void greet() {
         System.out.printf("____________________________________________________________%n" +
-                "Hello! I'm Duke, the parrot.%n" +
-                "What can I do for you?%n" +
+                "Hello! I'm Duke, your task manager.%n" +
+                "Key in your tasks below!%n" +
                 "____________________________________________________________%n");
     }
 
@@ -35,7 +38,7 @@ class Chat {
         System.out.printf("____________________________________________________________%nadded: " +
                 sentence +
                 "%n____________________________________________________________%n");
-        texts[textIndex++] = sentence;
+        taskBank.addTask(sentence);
 
     }
 
@@ -48,9 +51,28 @@ class Chat {
     static void list() {
         int i;
         System.out.printf("____________________________________________________________%n");
-        for (i = 0; i < textIndex; i++) {
-            System.out.println((i + 1) + ". " + texts[i]);
+        System.out.printf("Here are the tasks in your list:%n");
+        taskBank.printList();
+        System.out.printf("____________________________________________________________%n");
+    }
+
+    static void done(String sentence) {
+        String[] words = sentence.split(" ");
+        int targetIndex = Integer.parseInt(words[1]) - 1;
+        Task targetTask = taskBank.searchTask(targetIndex);
+        if (targetTask == null) {
+            System.out.println("Ouch! Index is out of range. Try again!");
+            System.out.printf("____________________________________________________________%n");
+            return;
+        } else if (targetTask.getIsDone()) {
+            System.out.println("Task is already completed");
+            System.out.printf("____________________________________________________________%n");
+            return;
         }
+        targetTask.markAsDone();
+        System.out.println("Nice! I've marked this task as done: ");
+        System.out.println("  [X] " + targetTask.getDescription());
         System.out.printf("____________________________________________________________%n");
     }
 }
+
