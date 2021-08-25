@@ -13,7 +13,7 @@ public class Duke {
                 } else if (sentence.equals("list")) {
                     Chat.list();
                 } else {
-                    Chat.parrot(sentence);
+                    Chat.add(sentence);
                 }
             }
         }
@@ -31,7 +31,7 @@ class Chat {
                 "____________________________________________________________%n");
     }
 
-    static void parrot(String sentence) {
+    static void add(String sentence) {
         System.out.printf("____________________________________________________________%nadded: " +
                 sentence +
                 "%n____________________________________________________________%n");
