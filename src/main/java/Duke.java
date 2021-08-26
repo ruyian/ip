@@ -4,27 +4,27 @@ public class Duke {
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
             String sentence;
-            Chat.greet();
+            Chatter.greet();
             while (true) {
                 sentence = sc.nextLine();
                 if (sentence.isEmpty()) {
                     System.out.println("I'm not sure if I get what you've said.");
                 } else if (sentence.equals("bye")) {
-                    Chat.bye();
+                    Chatter.bye();
                     break;
                 } else if (sentence.equals("list")) {
-                    Chat.list();
+                    Chatter.list();
                 } else if (sentence.startsWith("done")) {
-                    Chat.done(sentence);
+                    Chatter.done(sentence);
                 } else {
-                    Chat.add(sentence);
+                    Chatter.add(sentence);
                 }
             }
         }
     }
 }
 
-class Chat {
+class Chatter {
     static TaskBank taskBank = new TaskBank();
 
     static void greet() {
