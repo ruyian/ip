@@ -20,7 +20,7 @@ public class Task {
         return this.description;
     }
 
-    public boolean getIsDone() {
+    public boolean getDone() {
         return this.isDone;
     }
 

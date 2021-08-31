@@ -7,9 +7,7 @@ public class Duke {
             Chatter.greet();
             while (true) {
                 sentence = sc.nextLine();
-                if (sentence.isEmpty()) {
-                    System.out.println("I'm not sure if I get what you've said.");
-                } else if (sentence.equals("bye")) {
+                if (sentence.equals("bye")) {
                     Chatter.bye();
                     break;
                 } else if (sentence.equals("list")) {
@@ -25,6 +23,8 @@ public class Duke {
                 } else if (sentence.startsWith("event")) {
                     Task newTask = Chatter.taskBank.addEvent(sentence);
                     Chatter.add(sentence, newTask);
+                } else {
+                    System.out.println("I'm not sure if I get what you've said.");
                 }
             }
         }
@@ -72,7 +72,7 @@ class Chatter {
             System.out.println("Ouch! Index is out of range. Try again!");
             System.out.printf("____________________________________________________________%n");
             return;
-        } else if (targetTask.getIsDone()) {
+        } else if (targetTask.getDone()) {
             System.out.println("Task is already completed");
             System.out.printf("____________________________________________________________%n");
             return;

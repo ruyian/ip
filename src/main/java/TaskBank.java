@@ -36,6 +36,7 @@ public class TaskBank {
         }
     }
 
+    // search the Task in the array by index
     public Task searchTask(int taskIndex) {
         if (taskIndex < 0 || taskIndex > this.taskIndex) {
             return null;

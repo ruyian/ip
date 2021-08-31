@@ -1,19 +1,19 @@
 public class Deadline extends Task {
-    private String deadLineDate;
+    private String deadlineDate;
 
     public Deadline(String description) {
         int indexDivider = description.indexOf("/");
-        String deadLineName = description.substring(0, indexDivider).trim();
-        String deadLineDateString = description.substring(indexDivider + 1).trim();
-        String deadLineDate = deadLineDateString.split(" ", 2)[1].trim();
-        this.description = deadLineName;
-        this.deadLineDate = deadLineDateString;
+        String deadlineName = description.substring(0, indexDivider).trim();
+        String deadlineDateString = description.substring(indexDivider + 1).trim();
+        String deadlineDate = deadlineDateString.split(" ", 2)[1].trim();
+        this.description = deadlineName;
+        this.deadlineDate = deadlineDateString;
         this.taskType = "D";
         this.isDone = false;
     }
 
     public String getDeadLineDate() {
-        return this.deadLineDate;
+        return this.deadlineDate;
     }
 
     @Override
