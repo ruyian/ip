@@ -16,8 +16,15 @@ public class Duke {
                     Chatter.list();
                 } else if (sentence.startsWith("done")) {
                     Chatter.done(sentence);
-                } else {
-                    Chatter.add(sentence);
+                } else if (sentence.startsWith("todo")) {
+                    Task newTask = Chatter.taskBank.addTodo(sentence);
+                    Chatter.add(sentence, newTask);
+                } else if (sentence.startsWith("deadline")) {
+                    Task newTask = Chatter.taskBank.addDeadline(sentence);
+                    Chatter.add(sentence, newTask);
+                } else if (sentence.startsWith("event")) {
+                    Task newTask = Chatter.taskBank.addEvent(sentence);
+                    Chatter.add(sentence, newTask);
                 }
             }
         }
@@ -34,12 +41,13 @@ class Chatter {
                 "____________________________________________________________%n");
     }
 
-    static void add(String sentence) {
-        System.out.printf("____________________________________________________________%nadded: " +
-                sentence +
-                "%n____________________________________________________________%n");
-        taskBank.addTask(sentence);
-
+    static void add(String sentence, Task newTask) {
+        System.out.printf("____________________________________________________________%n" +
+                "Got it. I've added this task: %n " +
+                newTask +
+                "%nNow you have " + taskBank.getTaskIndex() +
+                " tasks in the list.%n" +
+                "____________________________________________________________%n");
     }
 
     static void bye() {
@@ -71,7 +79,7 @@ class Chatter {
         }
         targetTask.markAsDone();
         System.out.println("Nice! I've marked this task as done: ");
-        System.out.println("  [X] " + targetTask.getDescription());
+        System.out.println("[" + targetTask.getTaskType() + "]" + "[X] " + targetTask.getDescription());
         System.out.printf("____________________________________________________________%n");
     }
 }

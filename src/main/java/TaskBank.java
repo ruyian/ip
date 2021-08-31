@@ -10,6 +10,21 @@ public class TaskBank {
         tasks[taskIndex++] = new Task(taskInput);
     }
 
+    public Task addTodo(String todoInput) {
+        tasks[taskIndex++] = new ToDo(todoInput);
+        return tasks[taskIndex - 1];
+    }
+
+    public Task addEvent(String todoInput) {
+        tasks[taskIndex++] = new Event(todoInput);
+        return tasks[taskIndex - 1];
+    }
+
+    public Task addDeadline(String todoInput) {
+        tasks[taskIndex++] = new Deadline(todoInput);
+        return tasks[taskIndex - 1];
+    }
+
     public int getTaskIndex() {
         return this.taskIndex;
     }
@@ -17,7 +32,7 @@ public class TaskBank {
     public void printList() {
         int i;
         for (i = 0; i < taskIndex; i++) {
-            System.out.println((i + 1) + ".[" + tasks[i].getStatusIcon() + "] " + tasks[i].getDescription());
+            System.out.printf("%d.%s%n", i + 1, tasks[i]);
         }
     }
 
