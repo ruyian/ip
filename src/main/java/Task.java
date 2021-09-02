@@ -8,8 +8,7 @@ public class Task {
     }
 
     public Task(String description) {
-        int spaceIndex = description.indexOf(' ');
-        this.description = description.substring(spaceIndex + 1);
+        this.description = description;
         this.isDone = false;
     }
 
