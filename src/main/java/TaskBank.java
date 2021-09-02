@@ -1,9 +1,10 @@
 public class TaskBank {
     private Task[] tasks;
     private int taskIndex = 0;
+    private static final int MAX_TASK = 100;
 
     {
-        tasks = new Task[100];
+        tasks = new Task[MAX_TASK];
     }
 
     public void addTask(String taskInput) {

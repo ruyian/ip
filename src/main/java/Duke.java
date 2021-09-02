@@ -57,7 +57,6 @@ class Chatter {
     }
 
     static void list() {
-        int i;
         System.out.printf("____________________________________________________________%n");
         System.out.printf("Here are the tasks in your list:%n");
         taskBank.printList();
