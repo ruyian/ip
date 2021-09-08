@@ -3,30 +3,8 @@ import java.util.Scanner;
 public class Duke {
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
-            String sentence;
             Chatter.greet();
-            while (true) {
-                sentence = sc.nextLine();
-                if (sentence.equals("bye")) {
-                    Chatter.bye();
-                    break;
-                } else if (sentence.equals("list")) {
-                    Chatter.list();
-                } else if (sentence.startsWith("done")) {
-                    Chatter.done(sentence);
-                } else if (sentence.startsWith("todo")) {
-                    Task newTask = Chatter.taskBank.addTodo(sentence);
-                    Chatter.add(sentence, newTask);
-                } else if (sentence.startsWith("deadline")) {
-                    Task newTask = Chatter.taskBank.addDeadline(sentence);
-                    Chatter.add(sentence, newTask);
-                } else if (sentence.startsWith("event")) {
-                    Task newTask = Chatter.taskBank.addEvent(sentence);
-                    Chatter.add(sentence, newTask);
-                } else {
-                    System.out.println("I'm not sure if I get what you've said.");
-                }
-            }
+            Chatter.talk(sc);
         }
     }
 }
@@ -41,7 +19,46 @@ class Chatter {
                 "____________________________________________________________%n");
     }
 
-    static void add(String sentence, Task newTask) {
+    static void talk(Scanner sc) {
+        String sentence;
+        while (true) {
+            try {
+                sentence = sc.nextLine();
+                if (sentence.equals("bye")) {
+                    Chatter.bye();
+                    break;
+                } else if (sentence.equals("list")) {
+                    Chatter.list();
+                } else if (sentence.startsWith("done")) {
+                    Chatter.done(sentence);
+                } else if (sentence.startsWith("todo")) {
+                    Task newTask = Chatter.taskBank.addTodo(sentence);
+                    Chatter.add(newTask);
+                } else if (sentence.startsWith("deadline")) {
+                    Task newTask = Chatter.taskBank.addDeadline(sentence);
+                    Chatter.add(newTask);
+                } else if (sentence.startsWith("event")) {
+                    Task newTask = Chatter.taskBank.addEvent(sentence);
+                    Chatter.add(newTask);
+                } else {
+                    throw new IrregularInputException();
+                }
+            } catch (IrregularInputException e) {
+                System.out.printf("____________________________________________________________%n" +
+                        "☹ OOPS!!! I'm sorry, but I don't know what that means :-(%n" +
+                        "Please try again!%n" +
+                        "____________________________________________________________%n");
+            } catch (IndexOutOfBoundsException e) {
+                System.out.printf("Ouch! Index is out of range. Try again!%n");
+                System.out.printf("____________________________________________________________%n");
+            } catch (RepeatedCompletionException e) {
+                System.out.println("Task is already completed");
+                System.out.printf("____________________________________________________________%n");
+            }
+        }
+    }
+
+    static void add(Task newTask) {
         System.out.printf("____________________________________________________________%n" +
                 "Got it. I've added this task: %n " +
                 newTask +
@@ -63,18 +80,14 @@ class Chatter {
         System.out.printf("____________________________________________________________%n");
     }
 
-    static void done(String sentence) {
+    static void done(String sentence) throws IndexOutOfBoundsException, RepeatedCompletionException {
         String[] words = sentence.split(" ");
         int targetIndex = Integer.parseInt(words[1]) - 1;
         Task targetTask = taskBank.searchTask(targetIndex);
         if (targetTask == null) {
-            System.out.println("Ouch! Index is out of range. Try again!");
-            System.out.printf("____________________________________________________________%n");
-            return;
+            throw new IndexOutOfBoundsException();
         } else if (targetTask.getDone()) {
-            System.out.println("Task is already completed");
-            System.out.printf("____________________________________________________________%n");
-            return;
+            throw new RepeatedCompletionException();
         }
         targetTask.markAsDone();
         System.out.println("Nice! I've marked this task as done: ");
