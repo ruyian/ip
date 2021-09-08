@@ -1,3 +1,8 @@
+import duke.exception.IrregularInputException;
+import duke.exception.RepeatedCompletionException;
+import duke.task.Task;
+import duke.task.TaskBank;
+
 import java.util.Scanner;
 
 public class Duke {

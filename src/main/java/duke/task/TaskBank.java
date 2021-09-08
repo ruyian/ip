@@ -1,3 +1,5 @@
+package duke.task;
+
 public class TaskBank {
     private Task[] tasks;
     private int taskIndex = 0;
