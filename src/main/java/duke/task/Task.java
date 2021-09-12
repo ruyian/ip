@@ -1,18 +1,24 @@
 package duke.task;
 
+import duke.exception.RepeatedCompletionException;
+
+enum TaskType {
+    TO_DO, DEADLINE, EVENT;
+}
+
 public class Task {
     protected String description;
     protected boolean isDone;
-    protected String taskType;
+    protected TaskType taskType;
 
     public Task() {
-
+        this.isDone = false;
     }
 
     public Task(String description) {
+        this();
         int spaceIndex = description.indexOf(' ');
         this.description = description.substring(spaceIndex + 1);
-        this.isDone = false;
     }
 
     public String getStatusIcon() {
@@ -27,12 +33,24 @@ public class Task {
         return this.isDone;
     }
 
-    public void markAsDone() {
+    public void markAsDone() throws RepeatedCompletionException{
+        if (this.getDone()) {
+            throw new RepeatedCompletionException("This task has already been completed!\n");
+        }
         this.isDone = true;
     }
 
     public String getTaskType() {
-        return this.taskType;
+        switch (this.taskType) {
+        case TO_DO:
+            return "T";
+        case EVENT:
+            return "E";
+        case DEADLINE:
+            return "D";
+        default:
+            return "N"; // stands for unknown tasks
+        }
     }
 
     @Override
