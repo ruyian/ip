@@ -1,49 +1,64 @@
 package duke.task;
 
+import java.util.ArrayList;
+
 public class TaskBank {
-    private Task[] tasks;
-    private int taskIndex = 0;
-    private static final int MAX_TASK = 100;
+    private ArrayList<Task> tasks;
 
     {
-        tasks = new Task[MAX_TASK];
+        tasks = new ArrayList<>();
     }
 
-    public void addTask(String taskInput) {
-        tasks[taskIndex++] = new Task(taskInput);
+    public Task addTask(String taskInput) {
+        Task newTask = new Task(taskInput);
+        tasks.add(newTask);
+        return newTask;
     }
 
     public Task addTodo(String todoInput) {
-        tasks[taskIndex++] = new ToDo(todoInput);
-        return tasks[taskIndex - 1];
+        Task newTask = new ToDo(todoInput);
+        tasks.add(newTask);
+        return newTask;
     }
 
     public Task addEvent(String todoInput) {
-        tasks[taskIndex++] = new Event(todoInput);
-        return tasks[taskIndex - 1];
+        Task newTask = new Event(todoInput);
+        tasks.add(newTask);
+        return newTask;
     }
 
     public Task addDeadline(String todoInput) {
-        tasks[taskIndex++] = new Deadline(todoInput);
-        return tasks[taskIndex - 1];
+        Task newTask = new Deadline(todoInput);
+        tasks.add(newTask);
+        return newTask;
     }
 
-    public int getTaskIndex() {
-        return this.taskIndex;
+    public int getTaskSize() {
+        return tasks.size();
     }
 
     public void printList() {
-        int i;
-        for (i = 0; i < taskIndex; i++) {
-            System.out.printf("%d.%s%n", i + 1, tasks[i]);
+        int i = 0;
+        for (Task task : tasks) {
+            System.out.printf("%d.%s%n", i + 1, task);
+            i++;
         }
     }
 
     // search the Task in the array by index
-    public Task searchTask(int taskIndex) {
-        if (taskIndex < 0 || taskIndex > this.taskIndex) {
-            return null;
+    public Task searchTask(int taskIndex) throws IndexOutOfBoundsException {
+        if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
+            throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
         }
-        return tasks[taskIndex];
+        return tasks.get(taskIndex);
+    }
+
+    public Task removeTask(int taskIndex) throws IndexOutOfBoundsException {
+        if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
+            throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
+        }
+        Task deletedTask = tasks.get(taskIndex);
+        tasks.remove(taskIndex);
+        return deletedTask;
     }
 }
