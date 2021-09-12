@@ -1,4 +1,3 @@
-import duke.exception.EmptyInputException;
 import duke.exception.IrregularInputException;
 import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
@@ -19,10 +18,10 @@ class Chatter {
     static TaskBank taskBank = new TaskBank();
 
     static void greet() {
-        printDashLine();
-        System.out.printf("Hello! I'm Duke, your task manager.%n" +
-                "Key in your tasks below!%n");
-        printDashLine();
+        System.out.printf("____________________________________________________________%n" +
+                "Hello! I'm Duke, your task manager.%n" +
+                "Key in your tasks below!%n" +
+                "____________________________________________________________%n");
     }
 
     static void talk(Scanner sc) {
@@ -30,9 +29,7 @@ class Chatter {
         while (true) {
             try {
                 sentence = sc.nextLine();
-                if (sentence.isEmpty()) {
-                    throw new EmptyInputException("Empty input! Try again (o|o)\n");
-                } else if (sentence.equals("bye")) {
+                if (sentence.equals("bye")) {
                     Chatter.bye();
                     break;
                 } else if (sentence.equals("list")) {
@@ -48,80 +45,58 @@ class Chatter {
                 } else if (sentence.startsWith("event")) {
                     Task newTask = Chatter.taskBank.addEvent(sentence);
                     Chatter.add(newTask);
-                } else if (sentence.startsWith("delete")) {
-                    Chatter.deleteTask(sentence);
                 } else {
-                    throw new IrregularInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(" +
-                            "\nPlease try again!");
+                    throw new IrregularInputException();
                 }
             } catch (IrregularInputException e) {
-                printDashLine();
-                System.out.println(e.getMessage());
-                printDashLine();
+                System.out.printf("____________________________________________________________%n" +
+                        "☹ OOPS!!! I'm sorry, but I don't know what that means :-(%n" +
+                        "Please try again!%n" +
+                        "____________________________________________________________%n");
             } catch (IndexOutOfBoundsException e) {
-                System.out.println(e.getMessage());
-                printDashLine();
+                System.out.printf("Ouch! Index is out of range. Try again!%n");
+                System.out.printf("____________________________________________________________%n");
             } catch (RepeatedCompletionException e) {
-                System.out.println(e.getMessage());
-                printDashLine();
-            } catch (EmptyInputException e) {
-                printDashLine();
-                System.out.println(e.getMessage());
-                printDashLine();
-            } catch (NumberFormatException e) {
-                printDashLine();
-                System.out.printf("Not a valid number. Try again%n");
-                printDashLine();
+                System.out.println("Task is already completed");
+                System.out.printf("____________________________________________________________%n");
             }
         }
-
     }
 
     static void add(Task newTask) {
-        printDashLine();
-        System.out.printf("Got it. I've added this task: %n " +
+        System.out.printf("____________________________________________________________%n" +
+                "Got it. I've added this task: %n " +
                 newTask +
-                "%nNow you have " + taskBank.getTaskSize() +
-                " tasks in the list.%n");
-        printDashLine();
+                "%nNow you have " + taskBank.getTaskIndex() +
+                " tasks in the list.%n" +
+                "____________________________________________________________%n");
     }
 
     static void bye() {
-        printDashLine();
-        System.out.printf("Bye. Hope to see you again soon!%n");
-        printDashLine();
+        System.out.printf("____________________________________________________________%n" +
+                "Bye. Hope to see you again soon!%n" +
+                "____________________________________________________________%n");
     }
 
     static void list() {
-        printDashLine();
+        System.out.printf("____________________________________________________________%n");
         System.out.printf("Here are the tasks in your list:%n");
         taskBank.printList();
-        printDashLine();
+        System.out.printf("____________________________________________________________%n");
     }
 
-    static void done(String sentence) throws RepeatedCompletionException, NumberFormatException {
+    static void done(String sentence) throws IndexOutOfBoundsException, RepeatedCompletionException {
         String[] words = sentence.split(" ");
         int targetIndex = Integer.parseInt(words[1]) - 1;
         Task targetTask = taskBank.searchTask(targetIndex);
+        if (targetTask == null) {
+            throw new IndexOutOfBoundsException();
+        } else if (targetTask.getDone()) {
+            throw new RepeatedCompletionException();
+        }
         targetTask.markAsDone();
-        System.out.printf("Nice! I've marked this task as done: %n");
-        System.out.println("  " + targetTask);
-        printDashLine();
-    }
-
-    static void deleteTask(String sentence) {
-        String[] words = sentence.split(" ");
-        int targetIndex = Integer.parseInt(words[1]) - 1;
-        Task deletedTask = Chatter.taskBank.removeTask(targetIndex);
-        printDashLine();
-        System.out.printf("Noted. I've removed this task: %n");
-        System.out.println("  " + deletedTask);
-        System.out.printf("Now you have " + taskBank.getTaskSize() +
-                " tasks in the list.%n");
-        printDashLine();
-    }
-
-    static void printDashLine() {
+        System.out.println("Nice! I've marked this task as done: ");
+        System.out.println("[" + targetTask.getTaskType() + "]" + "[X] " + targetTask.getDescription());
         System.out.printf("____________________________________________________________%n");
     }
 }

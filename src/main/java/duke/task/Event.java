@@ -4,15 +4,13 @@ public class Event extends Task {
     private String eventDate;
 
     public Event(String description) {
-        super();
         int indexDivider = description.indexOf("/");
         String eventName = description.substring(0, indexDivider).trim();
-        int spaceIndex = description.indexOf(' ');
         String eventDateString = description.substring(indexDivider + 1).trim();
-        //String eventDate = eventDateString.split(" ", 2)[1].trim();
-        this.description = eventName.substring(spaceIndex + 1);
+        String eventDate = eventDateString.split(" ", 2)[1].trim();
+        this.description = eventName;
         this.eventDate = eventDateString;
-        this.taskType = TaskType.EVENT;
+        this.taskType = "E";
     }
 
     public String getEventDate() {
@@ -21,6 +19,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return super.toString()+ " (" + getEventDate() + ")";
+        return "[" + getTaskType() + "][" + getStatusIcon() + "] " + getDescription() +
+                " (" + getEventDate() + ")";
     }
 }
