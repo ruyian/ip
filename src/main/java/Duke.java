@@ -3,12 +3,20 @@ import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Duke {
+    static final String filePath = "./data/duke.txt";
+
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
-            Chatter.greet();
+            File f = new File(filePath);
+            if (f.exists()) {
+                Chatter.load();
+            } else {
+                Chatter.greet();
+            }
             Chatter.talk(sc);
         }
     }
@@ -20,8 +28,18 @@ class Chatter {
     static void greet() {
         System.out.printf("____________________________________________________________%n" +
                 "Hello! I'm Duke, your task manager.%n" +
+                "It's the first time I see you!%n" +
                 "Key in your tasks below!%n" +
                 "____________________________________________________________%n");
+    }
+
+    static void load() {
+        System.out.printf("____________________________________________________________%n" +
+                "Hello! I'm Duke, your task manager.%n" +
+                "I have loaded the tasks you have keyed in the last time%n" +
+                "Continue to key in your tasks below!%n" +
+                "____________________________________________________________%n");
+        taskBank.loadTasks();
     }
 
     static void talk(Scanner sc) {
@@ -45,6 +63,8 @@ class Chatter {
                 } else if (sentence.startsWith("event")) {
                     Task newTask = Chatter.taskBank.addEvent(sentence);
                     Chatter.add(newTask);
+                } else if (sentence.startsWith("clear")) {
+                    Chatter.clear();
                 } else {
                     throw new IrregularInputException();
                 }
@@ -70,6 +90,7 @@ class Chatter {
                 "%nNow you have " + taskBank.getTaskIndex() +
                 " tasks in the list.%n" +
                 "____________________________________________________________%n");
+        taskBank.exportTasks();
     }
 
     static void bye() {
@@ -98,6 +119,12 @@ class Chatter {
         System.out.println("Nice! I've marked this task as done: ");
         System.out.println("[" + targetTask.getTaskType() + "]" + "[X] " + targetTask.getDescription());
         System.out.printf("____________________________________________________________%n");
+        taskBank.exportTasks();
+    }
+
+    static void clear(){
+        taskBank.clear();
+        System.out.println("I have cleared all the tasks!");
     }
 }
 

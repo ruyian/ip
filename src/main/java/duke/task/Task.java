@@ -1,13 +1,19 @@
 package duke.task;
 
-public class Task {
+enum TaskType {
+    TO_DO, DEADLINE, EVENT;
+}
+
+public abstract class Task {
     protected String description;
     protected boolean isDone;
-    protected String taskType;
+    protected TaskType taskType;
 
     public Task() {
 
     }
+
+    abstract String describe();
 
     public Task(String description) {
         int spaceIndex = description.indexOf(' ');
@@ -27,12 +33,25 @@ public class Task {
         return this.isDone;
     }
 
+    public void setDone(){
+        this.isDone = true;
+    }
+
     public void markAsDone() {
         this.isDone = true;
     }
 
     public String getTaskType() {
-        return this.taskType;
+        switch (this.taskType) {
+        case TO_DO:
+            return "T";
+        case EVENT:
+            return "E";
+        case DEADLINE:
+            return "D";
+        default:
+            return "N";
+        }
     }
 
     @Override
