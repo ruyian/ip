@@ -1,12 +1,12 @@
 package duke.task;
 
 import duke.exception.RepeatedCompletionException;
-
 enum TaskType {
     TO_DO, DEADLINE, EVENT;
 }
 
-public class Task {
+
+public abstract class Task {
     protected String description;
     protected boolean isDone;
     protected TaskType taskType;
@@ -14,6 +14,8 @@ public class Task {
     public Task() {
         this.isDone = false;
     }
+
+    abstract String describe();
 
     public Task(String description) {
         this();
@@ -33,11 +35,10 @@ public class Task {
         return this.isDone;
     }
 
-    public void markAsDone() throws RepeatedCompletionException{
+    public void markAsDone() throws RepeatedCompletionException {
         if (this.getDone()) {
             throw new RepeatedCompletionException("This task has already been completed!\n");
         }
-        this.isDone = true;
     }
 
     public String getTaskType() {

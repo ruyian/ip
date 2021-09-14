@@ -1,26 +1,33 @@
 package duke.task;
 
 public class Deadline extends Task {
+    //private String deadlineDate;
+    private String deadlineDateString;
     private String deadlineDate;
 
     public Deadline(String description) {
-        //super();
+
+        super();
         int indexDivider = description.indexOf("/");
-        int spaceIndex = description.indexOf(' ');
-        String deadlineName = description.substring(0, indexDivider).trim();
-        String deadlineDateString = description.substring(indexDivider + 1).trim();
-        //String deadlineDate = deadlineDateString.split(" ", 2)[1].trim();
-        this.deadlineDate = deadlineDateString;
-        this.description = deadlineName.substring(spaceIndex + 1);
+        String eventName = description.substring(0, indexDivider).trim();
+        String eventDateString = description.substring(indexDivider + 1).trim();
+        //String eventDate = eventDateString.split(" ", 2)[1].trim();
+        this.description = eventName;
+        this.deadlineDateString = deadlineDateString;
         this.taskType = TaskType.DEADLINE;
     }
 
-    public String getDeadLineDate() {
-        return this.deadlineDate;
+
+    public String getDeadlineDateString() {
+        return deadlineDateString;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " (" + getDeadLineDate() + ")";
+        return super.toString() + " (" + getDeadlineDateString() + ")";
+    }
+
+    public String describe() {
+        return getDescription() + " | " + getDeadlineDateString();
     }
 }

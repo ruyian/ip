@@ -4,12 +4,20 @@ import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Duke {
+    static final String filePath = "./data/duke.txt";
+
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
-            Chatter.greet();
+            File f = new File(filePath);
+            if (f.exists()) {
+                Chatter.load();
+            } else {
+                Chatter.greet();
+            }
             Chatter.talk(sc);
         }
     }
@@ -21,8 +29,18 @@ class Chatter {
     static void greet() {
         printDashLine();
         System.out.printf("Hello! I'm Duke, your task manager.%n" +
+                "Its the first time I see you%n" +
                 "Key in your tasks below!%n");
         printDashLine();
+    }
+
+    static void load() {
+        System.out.printf("____________________________________________________________%n" +
+                "Hello! I'm Duke, your task manager.%n" +
+                "I have loaded the tasks you have keyed in the last time%n" +
+                "Continue to key in your tasks below!%n" +
+                "____________________________________________________________%n");
+        taskBank.loadTasks();
     }
 
     static void talk(Scanner sc) {
@@ -48,8 +66,12 @@ class Chatter {
                 } else if (sentence.startsWith("event")) {
                     Task newTask = Chatter.taskBank.addEvent(sentence);
                     Chatter.add(newTask);
+
                 } else if (sentence.startsWith("delete")) {
                     Chatter.deleteTask(sentence);
+
+                } else if (sentence.startsWith("clear")) {
+                    Chatter.clear();
                 } else {
                     throw new IrregularInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(" +
                             "\nPlease try again!");
@@ -81,9 +103,10 @@ class Chatter {
         printDashLine();
         System.out.printf("Got it. I've added this task: %n " +
                 newTask +
-                "%nNow you have " + taskBank.getTaskSize() +
+        "%nNow you have " + taskBank.getTaskSize() +
                 " tasks in the list.%n");
         printDashLine();
+        taskBank.exportTasks();
     }
 
     static void bye() {
@@ -123,6 +146,11 @@ class Chatter {
 
     static void printDashLine() {
         System.out.printf("____________________________________________________________%n");
+    }
+
+    static void clear() {
+        taskBank.clear();
+        System.out.println("I have cleared all the tasks!");
     }
 }
 

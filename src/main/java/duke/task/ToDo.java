@@ -7,4 +7,7 @@ public class ToDo extends Task {
         this.taskType = TaskType.TO_DO;
     }
 
+    public String describe() {
+        return getDescription();
+    }
 }
