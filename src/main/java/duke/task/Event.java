@@ -1,7 +1,6 @@
 package duke.task;
 
 public class Event extends Task {
-    //private String eventDate;
     private String eventDateString;
 
     public Event(String description) {
@@ -9,7 +8,6 @@ public class Event extends Task {
         int indexDivider = description.indexOf("/");
         String eventName = description.substring(0, indexDivider).trim();
         String eventDateString = description.substring(indexDivider + 1).trim();
-        //String eventDate = eventDateString.split(" ", 2)[1].trim();
         this.description = eventName;
         this.eventDateString = eventDateString;
         this.taskType = TaskType.EVENT;

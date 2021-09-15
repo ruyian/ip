@@ -1,18 +1,14 @@
 package duke.task;
 
 public class Deadline extends Task {
-    //private String deadlineDate;
     private String deadlineDateString;
-    private String deadlineDate;
 
     public Deadline(String description) {
-
         super();
         int indexDivider = description.indexOf("/");
-        String eventName = description.substring(0, indexDivider).trim();
-        String eventDateString = description.substring(indexDivider + 1).trim();
-        //String eventDate = eventDateString.split(" ", 2)[1].trim();
-        this.description = eventName;
+        String deadlineName = description.substring(0, indexDivider).trim();
+        String deadlineDateString = description.substring(indexDivider + 1).trim();
+        this.description = deadlineName;
         this.deadlineDateString = deadlineDateString;
         this.taskType = TaskType.DEADLINE;
     }
@@ -27,6 +23,7 @@ public class Deadline extends Task {
         return super.toString() + " (" + getDeadlineDateString() + ")";
     }
 
+    // for the use of exporting into a text
     public String describe() {
         return getDescription() + " | " + getDeadlineDateString();
     }

@@ -7,15 +7,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class TaskBank {
     private ArrayList<Task> tasks;
-    private int taskIndex = 0;
-    private static final int MAX_TASK = 100;
-    private static final String filePath = "./data/duke.txt";
+    public static final String filePath = "./data/duke.txt";
 
     {
         tasks = new ArrayList<>();
@@ -70,19 +67,18 @@ public class TaskBank {
     }
 
     public void exportTasks() {
-
-        StringBuffer rawData = new StringBuffer();
+        StringBuffer taskTextString = new StringBuffer();
         for (Task task : tasks) {
-            rawData.append(task.getTaskType());
-            rawData.append(" | ");
-            rawData.append(task.getDone() ? "1" : "0");
-            rawData.append(" | ");
-            rawData.append(task.describe());
-            rawData.append("\r\n");
+            taskTextString.append(task.getTaskType());
+            taskTextString.append(" | ");
+            taskTextString.append(task.getDone() ? "1" : "0");
+            taskTextString.append(" | ");
+            taskTextString.append(task.describe());
+            taskTextString.append("\r\n");
         }
         try {
             FileWriter fw = new FileWriter(filePath);
-            fw.write(rawData.toString());
+            fw.write(taskTextString.toString());
             fw.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -99,7 +95,6 @@ public class TaskBank {
             System.out.println("duke.txt is not found");
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            ;
         }
 
     }
@@ -115,28 +110,28 @@ public class TaskBank {
             if (taskTypeString.equals("D")) {
                 String deadLineInput = taskLine.substring(secondDivisor + 1).trim();
                 String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
-
                 Task newTask = addDeadline(deadLineInput.replace("| ", "/"));
                 if (taskCompletionStatus.equals("1")) {
                     try {
                         newTask.markAsDone();
-                    } catch(RepeatedCompletionException e){
-                        // This is left blank as from tasks are generated from
-                        // local files, and will not complete repeatedly
+                    } catch (RepeatedCompletionException e) {
+                        // This is left blank intentinally
+                        // as from tasks are generated from
+                        // local files, and will not be completed repeatedly
                     }
                 }
 
             } else if (taskTypeString.equals("E")) {
                 String eventLineInput = taskLine.substring(secondDivisor + 1).trim();
-                String taskCompletionStatus = taskLine.substring(firstDivisor + 2, thirdDivisor).trim();
-
+                String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
                 Task newTask = addEvent(eventLineInput.replace("| ", "/"));
                 if (taskCompletionStatus.equals("1")) {
                     try {
                         newTask.markAsDone();
-                    } catch(RepeatedCompletionException e){
-                        // This is left blank as from tasks are generated from
-                        // local files, and will not complete repeatedly
+                    } catch (RepeatedCompletionException e) {
+                        // This is left blank intentinally
+                        // as from tasks are generated from
+                        // local files, and will not be completed repeatedly
                     }
                 }
             } else {
