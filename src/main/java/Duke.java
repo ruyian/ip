@@ -8,11 +8,9 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Duke {
-    static final String filePath = "./data/duke.txt";
-
     public static void main(String[] args) {
         try (Scanner sc = new Scanner(System.in)) {
-            File f = new File(filePath);
+            File f = new File(TaskBank.filePath);
             if (f.exists()) {
                 Chatter.load();
             } else {
@@ -26,6 +24,10 @@ public class Duke {
 class Chatter {
     static TaskBank taskBank = new TaskBank();
 
+    static void printDashLine() {
+        System.out.printf("____________________________________________________________%n");
+    }
+
     static void greet() {
         printDashLine();
         System.out.printf("Hello! I'm Duke, your task manager.%n" +
@@ -35,11 +37,11 @@ class Chatter {
     }
 
     static void load() {
-        System.out.printf("____________________________________________________________%n" +
-                "Hello! I'm Duke, your task manager.%n" +
+        printDashLine();
+        System.out.printf("Hello! I'm Duke, your task manager.%n" +
                 "I have loaded the tasks you have keyed in the last time%n" +
-                "Continue to key in your tasks below!%n" +
-                "____________________________________________________________%n");
+                "Continue to key in your tasks below!%n");
+        printDashLine();
         taskBank.loadTasks();
     }
 
@@ -66,10 +68,8 @@ class Chatter {
                 } else if (sentence.startsWith("event")) {
                     Task newTask = Chatter.taskBank.addEvent(sentence);
                     Chatter.add(newTask);
-
                 } else if (sentence.startsWith("delete")) {
                     Chatter.deleteTask(sentence);
-
                 } else if (sentence.startsWith("clear")) {
                     Chatter.clear();
                 } else {
@@ -96,14 +96,13 @@ class Chatter {
                 printDashLine();
             }
         }
-
     }
 
     static void add(Task newTask) {
         printDashLine();
         System.out.printf("Got it. I've added this task: %n " +
                 newTask +
-        "%nNow you have " + taskBank.getTaskSize() +
+                "%nNow you have " + taskBank.getTaskSize() +
                 " tasks in the list.%n");
         printDashLine();
         taskBank.exportTasks();
@@ -127,6 +126,7 @@ class Chatter {
         int targetIndex = Integer.parseInt(words[1]) - 1;
         Task targetTask = taskBank.searchTask(targetIndex);
         targetTask.markAsDone();
+        taskBank.exportTasks();
         System.out.printf("Nice! I've marked this task as done: %n");
         System.out.println("  " + targetTask);
         printDashLine();
@@ -141,16 +141,15 @@ class Chatter {
         System.out.println("  " + deletedTask);
         System.out.printf("Now you have " + taskBank.getTaskSize() +
                 " tasks in the list.%n");
+        taskBank.exportTasks();
         printDashLine();
-    }
-
-    static void printDashLine() {
-        System.out.printf("____________________________________________________________%n");
     }
 
     static void clear() {
         taskBank.clear();
+        taskBank.exportTasks();
         System.out.println("I have cleared all the tasks!");
+        printDashLine();
     }
 }
 

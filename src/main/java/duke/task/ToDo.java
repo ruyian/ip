@@ -7,6 +7,7 @@ public class ToDo extends Task {
         this.taskType = TaskType.TO_DO;
     }
 
+    // for the use of exporting into a text
     public String describe() {
         return getDescription();
     }
