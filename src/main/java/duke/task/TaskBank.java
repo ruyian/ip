@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class TaskBank {
     private ArrayList<Task> tasks;
+    public static final String directoryPath = "./data/";
     public static final String filePath = "./data/duke.txt";
 
     {
