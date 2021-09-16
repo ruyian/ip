@@ -5,6 +5,7 @@ import duke.task.Task;
 import duke.task.TaskBank;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Duke {
@@ -14,7 +15,7 @@ public class Duke {
             if (f.exists()) {
                 Chatter.load();
             } else {
-                Chatter.greet();
+                Chatter.greet(f);
             }
             Chatter.talk(sc);
         }
@@ -28,7 +29,14 @@ class Chatter {
         System.out.printf("____________________________________________________________%n");
     }
 
-    static void greet() {
+    static void greet(File file) {
+        File filePath = new File(TaskBank.directoryPath);
+        filePath.mkdir();
+        try {
+            file.createNewFile();
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
         printDashLine();
         System.out.printf("Hello! I'm Duke, your task manager.%n" +
                 "Its the first time I see you%n" +
