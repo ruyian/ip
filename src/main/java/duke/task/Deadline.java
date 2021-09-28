@@ -13,7 +13,6 @@ public class Deadline extends Task {
         this.taskType = TaskType.DEADLINE;
     }
 
-
     public String getDeadlineDateString() {
         return deadlineDateString;
     }
@@ -23,7 +22,10 @@ public class Deadline extends Task {
         return super.toString() + " (" + getDeadlineDateString() + ")";
     }
 
-    // for the use of exporting into a text
+
+    /** Returns a formatted String that to be stored in file, duke.txt
+     * @return the formatted String
+     */
     public String describeInFile() {
         return getDescription() + " | " + getDeadlineDateString();
     }
