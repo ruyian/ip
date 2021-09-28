@@ -90,14 +90,7 @@ public class Command {
         return newTask;
     }
 
-    private static Task completeTask(TaskBank tb, String sentence) throws RepeatedCompletionException, NumberFormatException, IrregularInputException {
-        int targetIndex = Parser.parseIndex(sentence);
-        Task completedTask = tb.searchTask(targetIndex);
-        completedTask.markAsDone();
-        return completedTask;
-    }
-
-    private static TaskBank findTask(String input, TaskBank givenTaskBank) throws IrregularInputException{
+    private static TaskBank findTask(String input, TaskBank givenTaskBank) throws IrregularInputException {
         String keywordInput = Parser.parseKeyWord(input);
         ArrayList<Task> matchingTasks = TaskBank.findMatchingTask(givenTaskBank, keywordInput);
         if (matchingTasks.isEmpty()) {
@@ -105,5 +98,12 @@ public class Command {
         } else {
             return new TaskBank(matchingTasks);
         }
+    }
+
+    private static Task completeTask(TaskBank tb, String sentence) throws RepeatedCompletionException, NumberFormatException, IrregularInputException {
+        int targetIndex = Parser.parseIndex(sentence);
+        Task completedTask = tb.searchTask(targetIndex);
+        completedTask.markAsDone();
+        return completedTask;
     }
 }
