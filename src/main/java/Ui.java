@@ -4,9 +4,6 @@ import duke.task.TaskBank;
 import java.util.Scanner;
 
 public class Ui {
-    Ui() {
-    }
-
     public void printDashLine() {
         System.out.printf("____________________________________________________________%n");
     }
@@ -16,32 +13,6 @@ public class Ui {
         System.out.printf("Hello! I'm Duke, your task manager.%n" +
                 "Its the first time I see you%n" +
                 "Key in your tasks below!%n");
-        printDashLine();
-    }
-
-    public void showTaskAdded(Task newTask, TaskBank taskBank) {
-        printDashLine();
-        System.out.printf("Got it. I've added this task: %n " +
-                newTask +
-                "%nNow you have " + taskBank.getTaskSize() +
-                " tasks in the list.%n");
-        printDashLine();
-    }
-
-    public void showAllTask(TaskBank taskBank) {
-        printDashLine();
-        System.out.printf("Here are the tasks in your list:%n");
-        int i = 0;
-        for (Task task : taskBank.getTasks()) {
-            System.out.printf("%d.%s%n", i + 1, task);
-            i++;
-        }
-        printDashLine();
-    }
-
-    public void showTaskDone(Task targetTask, TaskBank testBank) {
-        System.out.printf("Nice! I've marked this task as done: %n");
-        System.out.println("  " + targetTask);
         printDashLine();
     }
 
@@ -76,14 +47,16 @@ public class Ui {
                 " tasks in the list.%n");
     }
 
-    public void showCompleteMessage(Task completedTask){
+    public void showCompleteMessage(Task completedTask) {
         System.out.printf("Nice! I've marked this task as done: %n");
         System.out.println("  " + completedTask);
     }
-    public String readInput(Scanner sc){
+
+    public String readInput(Scanner sc) {
         return sc.nextLine();
     }
-    public void showLoadMessage(){
+
+    public void showLoadMessage() {
         printDashLine();
         System.out.printf("Hello! I'm Duke, your task manager.%n" +
                 "I have loaded the tasks you have keyed in the last time%n" +
