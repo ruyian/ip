@@ -26,8 +26,7 @@ public class Parser {
         } else if (sentence.startsWith("find")) {
             return Action.FIND;
         } else {
-            throw new IrregularInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(" +
-                    "\nPlease try again!");
+            return Action.UNKNOWN_ACTION;
         }
     }
 

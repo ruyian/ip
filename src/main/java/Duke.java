@@ -16,19 +16,17 @@ public class Duke {
     }
 
     public void run() {
-        while (!isTerminating) {
-            try (Scanner sc = new Scanner(System.in)) {
-                String fullCommand;
-                while (!isTerminating) {
-                    fullCommand = ui.readInput(sc);
-                    ui.printDashLine();
-                    Action action = Parser.parseCommand(fullCommand);
-                    Command.perform(fullCommand, action, ui, storage, taskBank);
-                    ui.printDashLine();
-                }
-            } catch (DukeException e) {
-                ui.showErrorMessage(e);
+        try (Scanner sc = new Scanner(System.in)) {
+            String fullCommand;
+            while (!isTerminating) {
+                fullCommand = ui.readInput(sc);
+                ui.printDashLine();
+                Action action = Parser.parseCommand(fullCommand);
+                Command.perform(fullCommand, action, ui, storage, taskBank);
+                ui.printDashLine();
             }
+        } catch (DukeException e) {
+            ui.showErrorMessage(e);
         }
     }
 

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class Command {
     public static void perform(String sentence, Action action, Ui ui, Storage storage, TaskBank tb) throws DukeException {
         switch (action) {
+        case UNKNOWN_ACTION:
+            System.out.printf("☹ OOPS!!! I'm sorry, but I don't know what that means :-( %nPlease try again!%n");
+            break;
         case CLEAR:
             clear(tb, storage);
             ui.showClearMessage();
