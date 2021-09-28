@@ -1,13 +1,14 @@
 import duke.exception.DukeException;
+import duke.exception.IrregularInputException;
 import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
 
 public class Command {
-    public static void perform(String sentence, Action action, Ui ui, Storage storage, TaskBank tb)throws DukeException {
+    public static void perform(String sentence, Action action, Ui ui, Storage storage, TaskBank tb) throws DukeException {
         switch (action) {
         case CLEAR:
-            clear(tb);
+            clear(tb,storage);
             ui.showClearMessage();
             storage.exportTasks(tb);
             break;
@@ -42,18 +43,18 @@ public class Command {
 
     }
 
-    private static void clear(TaskBank tb) {
+    private static void clear(TaskBank tb, Storage storage) {
         tb.clear();
     }
 
-    private static Task deleteTask(String deleteStament, TaskBank tb) {
+    private static Task deleteTask(String deleteStament, TaskBank tb) throws IrregularInputException {
         int targetIndex = Parser.parseIndex(deleteStament);
         Task deletedTask = tb.removeTask(targetIndex);
         return deletedTask;
     }
 
     private static void bye() {
-        Duke.terminate();
+        Duke.terminateDuke();
     }
 
     private static void listAllTask(TaskBank tb) {
@@ -78,7 +79,7 @@ public class Command {
         return newTask;
     }
 
-    private static Task completeTask(TaskBank tb, String sentence) throws RepeatedCompletionException, NumberFormatException {
+    private static Task completeTask(TaskBank tb, String sentence) throws RepeatedCompletionException, NumberFormatException, IrregularInputException {
         int targetIndex = Parser.parseIndex(sentence);
         Task completedTask = tb.searchTask(targetIndex);
         completedTask.markAsDone();

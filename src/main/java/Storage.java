@@ -62,7 +62,7 @@ public class Storage {
         }
     }
 
-    public void loadTaskLine(String taskLine, TaskBank tb) throws IOException {
+    private void loadTaskLine(String taskLine, TaskBank tb) throws IOException {
         String taskTypeString = taskLine.substring(0, 1);
         int firstDivisor = taskLine.indexOf("|", 1);
         int secondDivisor = taskLine.indexOf("|", firstDivisor + 1);
@@ -78,7 +78,6 @@ public class Storage {
                     try {
                         newTask.markAsDone();
                     } catch (RepeatedCompletionException e) {
-
                         // This is left blank intentinally
                         // as from tasks are generated from
                         // local files, and will not be completed repeatedly

@@ -29,9 +29,13 @@ public class Parser {
         }
     }
 
-    public static int parseIndex(String sentence) {
+    public static int parseIndex(String sentence) throws IrregularInputException {
         String[] words = sentence.split(" ");
-        int targetIndex = Integer.parseInt(words[1]) - 1;
-        return targetIndex;
+        try {
+            int targetIndex = Integer.parseInt(words[1]) - 1;
+            return targetIndex;
+        } catch(NumberFormatException nfe){
+            throw new IrregularInputException();
+        }
     }
 }
