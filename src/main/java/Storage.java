@@ -1,79 +1,38 @@
-package duke.task;
-
-
 import duke.exception.RepeatedCompletionException;
+import duke.task.Task;
+import duke.task.TaskBank;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.ArrayList;
 
-public class TaskBank {
-    private ArrayList<Task> tasks;
-    public static final String directoryPath = "./data/";
-    public static final String filePath = "./data/duke.txt";
+public class Storage {
+    private String filePath;
+    private File file;
 
-    public TaskBank() {
-        tasks = new ArrayList<>();
-    }
-
-    public ArrayList<Task> getTasks() {
-        return tasks;
-    }
-
-
-    public Task addTodo(String todoInput) {
-        Task newTask = new ToDo(todoInput);
-        tasks.add(newTask);
-        return newTask;
-    }
-
-    public Task addEvent(String todoInput) {
-        Task newTask = new Event(todoInput);
-        tasks.add(newTask);
-        return newTask;
-    }
-
-    public Task addDeadline(String todoInput) {
-        Task newTask = new Deadline(todoInput);
-        tasks.add(newTask);
-        return newTask;
-    }
-
-    public int getTaskSize() {
-        return tasks.size();
-    }
-
-    public void printList() {
-        int i = 0;
-        for (Task task : tasks) {
-            System.out.printf("%d.%s%n", i + 1, task);
-            i++;
+    Storage(String filePath, TaskBank tb, Ui ui) {
+        this.filePath = filePath;
+        file = new File(filePath);
+        if (file.exists()) {
+            loadTasks(tb);
+            ui.showLoadMessage();
+        } else {
+            File directoryPath = new File(filePath);
+            directoryPath.mkdir();
+            try {
+                file.createNewFile();
+            } catch(IOException e){
+                System.out.println(e.getMessage());
+            }
+            ui.showGreeting();
         }
     }
 
-    // search the Task in the array by index
-    public Task searchTask(int taskIndex) throws IndexOutOfBoundsException {
-        if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
-            throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
-        }
-        return tasks.get(taskIndex);
-    }
-
-    public Task removeTask(int taskIndex) throws IndexOutOfBoundsException {
-        if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
-            throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
-        }
-        Task deletedTask = tasks.get(taskIndex);
-        tasks.remove(taskIndex);
-        return deletedTask;
-    }
-
-    public void exportTasks() {
+    public void exportTasks(TaskBank tb) {
         StringBuffer taskTextString = new StringBuffer();
-        for (Task task : tasks) {
+        for (Task task : tb.getTasks()) {
             taskTextString.append(task.getTaskType());
             taskTextString.append(" | ");
             taskTextString.append(task.getDone() ? "1" : "0");
@@ -90,11 +49,11 @@ public class TaskBank {
         }
     }
 
-    public void loadTasks() {
+    public void loadTasks(TaskBank tb) {
         File f = new File(this.filePath);
         try (Scanner sc = new Scanner(f)) {
             while (sc.hasNext()) {
-                loadTaskLine(sc.nextLine());
+                loadTaskLine(sc.nextLine(), tb);
             }
         } catch (FileNotFoundException e) {
             System.out.println("duke.txt is not found");
@@ -103,18 +62,18 @@ public class TaskBank {
         }
     }
 
-    public void loadTaskLine(String taskLine) throws IOException {
+    public void loadTaskLine(String taskLine, TaskBank tb) throws IOException {
         String taskTypeString = taskLine.substring(0, 1);
         int firstDivisor = taskLine.indexOf("|", 1);
         int secondDivisor = taskLine.indexOf("|", firstDivisor + 1);
         int thirdDivisor = taskLine.indexOf("|", secondDivisor + 1);
         if (thirdDivisor == -1) { // todo type
-            addTodo(taskLine.substring(secondDivisor + 1).trim());
+            tb.addTodo(taskLine.substring(secondDivisor + 1).trim());
         } else {
             if (taskTypeString.equals("D")) {
                 String deadLineInput = taskLine.substring(secondDivisor + 1).trim();
                 String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
-                Task newTask = addDeadline(deadLineInput.replace("| ", "/"));
+                Task newTask = tb.addDeadline(deadLineInput.replace("| ", "/"));
                 if (taskCompletionStatus.equals("1")) {
                     try {
                         newTask.markAsDone();
@@ -129,7 +88,7 @@ public class TaskBank {
             } else if (taskTypeString.equals("E")) {
                 String eventLineInput = taskLine.substring(secondDivisor + 1).trim();
                 String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
-                Task newTask = addEvent(eventLineInput.replace("| ", "/"));
+                Task newTask = tb.addEvent(eventLineInput.replace("| ", "/"));
                 if (taskCompletionStatus.equals("1")) {
                     try {
                         newTask.markAsDone();
@@ -143,10 +102,5 @@ public class TaskBank {
                 throw new IOException("Wrong type from data loader");
             }
         }
-    }
-
-    public void clear() {
-        tasks = new ArrayList<>();
-        exportTasks();
     }
 }

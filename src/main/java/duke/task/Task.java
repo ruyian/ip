@@ -16,7 +16,7 @@ public abstract class Task {
         this.isDone = false;
     }
 
-    public abstract String describe();
+    public abstract String describeInFile();
 
     public Task(String description) {
         this();

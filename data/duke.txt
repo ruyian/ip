@@ -1,2 +1,1 @@
-T | 0 | aaaa
-E | 1 | bbbbb | June
+T | 0 | aaa
