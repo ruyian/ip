@@ -65,10 +65,6 @@ public class TaskBank {
         return deletedTask;
     }
 
-    public void clear() {
-        tasks = new ArrayList<>();
-    }
-
     public static ArrayList<Task> findMatchingTask(TaskBank givenBank, String keyword) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : givenBank.getTasks()) {
@@ -79,4 +75,10 @@ public class TaskBank {
         }
         return matchingTasks;
     }
+
+    public void clear() {
+        tasks = new ArrayList<>();
+    }
+
+
 }

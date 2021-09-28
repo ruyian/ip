@@ -1,6 +1,7 @@
 import duke.task.Task;
 import duke.task.TaskBank;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
@@ -56,6 +57,18 @@ public class Ui {
         return sc.nextLine();
     }
 
+    public static ArrayList<Task> findMatchingTask(TaskBank givenBank, String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task task : givenBank.getTasks()) {
+            String lowercaseTaskDescription = task.getDescription().toLowerCase();
+            if (lowercaseTaskDescription.contains(keyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
+    }
+
+
     public void showLoadMessage() {
         printDashLine();
         System.out.printf("Hello! I'm Duke, your task manager.%n" +
@@ -64,7 +77,7 @@ public class Ui {
         printDashLine();
     }
 
-    public void showFindMessage(){
+    public void showFindMessage() {
         System.out.printf(" Here are the matching tasks in your list:%n");
     }
 }
