@@ -9,6 +9,10 @@ public class TaskBank {
         tasks = new ArrayList<>();
     }
 
+    public TaskBank(ArrayList<Task> givenTasks){
+        tasks = givenTasks;
+    }
+
     public ArrayList<Task> getTasks() {
         return tasks;
     }
@@ -63,5 +67,16 @@ public class TaskBank {
 
     public void clear() {
         tasks = new ArrayList<>();
+    }
+
+    public static ArrayList<Task> findMatchingTask(TaskBank givenBank, String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task task : givenBank.getTasks()) {
+            String lowercaseTaskDescription = task.getDescription().toLowerCase();
+            if (lowercaseTaskDescription.contains(keyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 }

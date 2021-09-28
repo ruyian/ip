@@ -4,11 +4,13 @@ import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
 
+import java.util.ArrayList;
+
 public class Command {
     public static void perform(String sentence, Action action, Ui ui, Storage storage, TaskBank tb) throws DukeException {
         switch (action) {
         case CLEAR:
-            clear(tb,storage);
+            clear(tb, storage);
             ui.showClearMessage();
             storage.exportTasks(tb);
             break;
@@ -37,8 +39,13 @@ public class Command {
             ui.showCompleteMessage(completedTask);
             storage.exportTasks(tb);
             break;
+        case FIND:
+            TaskBank matchedTaskBank = findTask(sentence, tb);
+            ui.showFindMessage();
+            listAllTask(matchedTaskBank);
+            break;
         default:
-            System.out.println("ERROR IN PARSING");
+            System.out.println("ERROR IN COMMMAND");
         }
 
     }
@@ -63,15 +70,16 @@ public class Command {
 
     private static Task createTask(Action action, TaskBank tb, String sentence) {
         Task newTask;
+        String description = Parser.parseDescription(sentence);
         switch (action) {
         case CREATE_TODO:
-            newTask = tb.addTodo(sentence);
+            newTask = tb.addTodo(description);
             break;
         case CREATE_DEADLINE:
-            newTask = tb.addDeadline(sentence);
+            newTask = tb.addDeadline(description);
             break;
         case CREATE_EVENT:
-            newTask = tb.addEvent(sentence);
+            newTask = tb.addEvent(description);
             break;
         default:
             newTask = null;
@@ -84,5 +92,15 @@ public class Command {
         Task completedTask = tb.searchTask(targetIndex);
         completedTask.markAsDone();
         return completedTask;
+    }
+
+    private static TaskBank findTask(String input, TaskBank givenTaskBank) throws IrregularInputException{
+        String keywordInput = Parser.parseKeyWord(input);
+        ArrayList<Task> matchingTasks = TaskBank.findMatchingTask(givenTaskBank, keywordInput);
+        if (matchingTasks.isEmpty()) {
+            return null;
+        } else {
+            return new TaskBank(matchingTasks);
+        }
     }
 }
