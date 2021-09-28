@@ -1,3 +1,4 @@
+import duke.exception.DukeException;
 import duke.exception.EmptyInputException;
 import duke.exception.IrregularInputException;
 import duke.exception.RepeatedCompletionException;
@@ -9,16 +10,45 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Duke {
-    public static void main(String[] args) {
-        try (Scanner sc = new Scanner(System.in)) {
-            File f = new File(TaskBank.filePath);
-            if (f.exists()) {
-                Chatter.load();
-            } else {
-                Chatter.greet(f);
+    private Storage storage;
+    private TaskBank taskBank;
+    private Ui ui;
+    private static boolean isTerminating;
+
+    public Duke(String filePath) {
+        ui = new Ui();
+        taskBank = new TaskBank();
+        storage = new Storage(filePath, taskBank, ui);
+    }
+
+    public void run() {
+        while (!isTerminating) {
+            try (Scanner sc = new Scanner(System.in)) {
+                String fullCommand;
+                while (true && !isTerminating) {
+                    fullCommand = ui.readInput(sc);
+                    ui.printDashLine();
+                    Action action = Parser.parseCommand(fullCommand);
+                    Command.perform(fullCommand, action, ui, storage, taskBank);
+                    ui.printDashLine();
+                }
+            } catch (DukeException e) {
+                ui.showErrorMessage(e);
             }
-            Chatter.talk(sc);
         }
+    }
+
+    public static void main(String[] args) {
+        isTerminating = false;
+        /*try (Scanner sc = new Scanner(System.in)) {
+            Chatter.handleFile();
+            Chatter.talk(sc);
+        }*/
+        new Duke("./data/duke.txt").run();
+    }
+
+    public static void terminate() {
+        isTerminating = true;
     }
 }
 
@@ -34,7 +64,7 @@ class Chatter {
         filePath.mkdir();
         try {
             file.createNewFile();
-        } catch(IOException e){
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         printDashLine();
@@ -53,6 +83,15 @@ class Chatter {
         taskBank.loadTasks();
     }
 
+    static void handleFile() {
+        File f = new File(TaskBank.filePath);
+        if (f.exists()) {
+            Chatter.load();
+        } else {
+            Chatter.greet(f);
+        }
+    }
+
     static void talk(Scanner sc) {
         String sentence;
         while (true) {
@@ -64,18 +103,18 @@ class Chatter {
                     Chatter.bye();
                     break;
                 } else if (sentence.equals("list")) {
-                    Chatter.list();
+                    Chatter.listAllTask();
                 } else if (sentence.startsWith("done")) {
-                    Chatter.done(sentence);
+                    Chatter.completeTask(sentence);
                 } else if (sentence.startsWith("todo")) {
                     Task newTask = Chatter.taskBank.addTodo(sentence);
-                    Chatter.add(newTask);
+                    Chatter.addTask(newTask);
                 } else if (sentence.startsWith("deadline")) {
                     Task newTask = Chatter.taskBank.addDeadline(sentence);
-                    Chatter.add(newTask);
+                    Chatter.addTask(newTask);
                 } else if (sentence.startsWith("event")) {
                     Task newTask = Chatter.taskBank.addEvent(sentence);
-                    Chatter.add(newTask);
+                    Chatter.addTask(newTask);
                 } else if (sentence.startsWith("delete")) {
                     Chatter.deleteTask(sentence);
                 } else if (sentence.startsWith("clear")) {
@@ -106,7 +145,7 @@ class Chatter {
         }
     }
 
-    static void add(Task newTask) {
+    static void addTask(Task newTask) {
         printDashLine();
         System.out.printf("Got it. I've added this task: %n " +
                 newTask +
@@ -122,14 +161,14 @@ class Chatter {
         printDashLine();
     }
 
-    static void list() {
+    static void listAllTask() {
         printDashLine();
         System.out.printf("Here are the tasks in your list:%n");
         taskBank.printList();
         printDashLine();
     }
 
-    static void done(String sentence) throws RepeatedCompletionException, NumberFormatException {
+    static void completeTask(String sentence) throws RepeatedCompletionException, NumberFormatException {
         String[] words = sentence.split(" ");
         int targetIndex = Integer.parseInt(words[1]) - 1;
         Task targetTask = taskBank.searchTask(targetIndex);

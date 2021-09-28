@@ -8,7 +8,7 @@ public class ToDo extends Task {
     }
 
     // for the use of exporting into a text
-    public String describe() {
+    public String describeInFile() {
         return getDescription();
     }
 }
