@@ -20,8 +20,7 @@ public abstract class Task {
 
     public Task(String description) {
         this();
-        int spaceIndex = description.indexOf(' ');
-        this.description = description.substring(spaceIndex + 1);
+        this.description = description;
     }
 
     public String getStatusIcon() {

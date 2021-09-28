@@ -63,4 +63,8 @@ public class Ui {
                 "Continue to key in your tasks below!%n");
         printDashLine();
     }
+
+    public void showFindMessage(){
+        System.out.printf(" Here are the matching tasks in your list:%n");
+    }
 }

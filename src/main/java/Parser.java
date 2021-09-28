@@ -23,6 +23,8 @@ public class Parser {
             return Action.DELETE;
         } else if (sentence.startsWith("clear")) {
             return Action.CLEAR;
+        } else if (sentence.startsWith("find")) {
+            return Action.FIND;
         } else {
             throw new IrregularInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(" +
                     "\nPlease try again!");
@@ -34,8 +36,29 @@ public class Parser {
         try {
             int targetIndex = Integer.parseInt(words[1]) - 1;
             return targetIndex;
-        } catch(NumberFormatException nfe){
-            throw new IrregularInputException();
+        } catch (NumberFormatException nfe) {
+            throw new IrregularInputException("Not a number. Try again!");
         }
+    }
+
+    public static String parseKeyWord(String sentence) throws IrregularInputException {
+        try {
+            int spaceIndex = sentence.indexOf(' ');
+            if (spaceIndex == -1) {
+                throw new IndexOutOfBoundsException();
+            }
+            String keyWord = sentence.substring(spaceIndex + 1);
+            return keyWord;
+        } catch (NumberFormatException nfe) {
+            throw new IrregularInputException("Bad keyword!");
+        } catch (IndexOutOfBoundsException ie) {
+            throw new IrregularInputException("You have not keyed in any keyword");
+        }
+    }
+
+    public static String parseDescription(String sentence) {
+        int spaceIndex = sentence.indexOf(' ');
+        String description = sentence.substring(spaceIndex + 1);
+        return description;
     }
 }
