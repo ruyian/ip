@@ -18,20 +18,38 @@ public class TaskBank {
     }
 
 
+    /** Adds a todo to taskbank
+     *
+     * Creates a new todo task from the raw String input
+     * @param todoInput
+     * @return the newly created todo Task
+     */
     public Task addTodo(String todoInput) {
         Task newTask = new ToDo(todoInput);
         tasks.add(newTask);
         return newTask;
     }
 
-    public Task addEvent(String todoInput) {
-        Task newTask = new Event(todoInput);
+    /** Adds an event to taskbank
+     *
+     * Creates a new event task from the raw String input
+     * @param eventInput
+     * @return the newly created event Task
+     */
+    public Task addEvent(String eventInput) {
+        Task newTask = new Event(eventInput);
         tasks.add(newTask);
         return newTask;
     }
 
-    public Task addDeadline(String todoInput) {
-        Task newTask = new Deadline(todoInput);
+    /** Adds a deadline to taskbank
+     *
+     * Creates a new event task from the raw String input
+     * @param deadlilneInput
+     * @return the newly created deadline Task
+     */
+    public Task addDeadline(String deadlilneInput) {
+        Task newTask = new Deadline(deadlilneInput);
         tasks.add(newTask);
         return newTask;
     }
@@ -40,6 +58,9 @@ public class TaskBank {
         return tasks.size();
     }
 
+    /** Prints all tasks in TaskBank
+     *
+     */
     public void printList() {
         int i = 0;
         for (Task task : tasks) {
@@ -48,7 +69,12 @@ public class TaskBank {
         }
     }
 
-    // search the Task in the array by index
+    /** Returns  the target task from the TaskBank by specific index
+     *
+     * @param taskIndex the index of target task
+     * @return the target index
+     * @throws IndexOutOfBoundsException if index provided is out of bound
+     */
     public Task searchTask(int taskIndex) throws IndexOutOfBoundsException {
         if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
             throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
@@ -56,6 +82,12 @@ public class TaskBank {
         return tasks.get(taskIndex);
     }
 
+    /** Removes the target task from the TaskBank
+     *
+     * @param taskIndex the index of target task
+     * @return the removed Task
+     * @throws IndexOutOfBoundsException if index provided is out of bound
+     */
     public Task removeTask(int taskIndex) throws IndexOutOfBoundsException {
         if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
             throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
@@ -63,10 +95,6 @@ public class TaskBank {
         Task deletedTask = tasks.get(taskIndex);
         tasks.remove(taskIndex);
         return deletedTask;
-    }
-
-    public void clear() {
-        tasks = new ArrayList<>();
     }
 
     public static ArrayList<Task> findMatchingTask(TaskBank givenBank, String keyword) {
@@ -79,4 +107,12 @@ public class TaskBank {
         }
         return matchingTasks;
     }
+
+    /** Clears the content of the the Task Bank
+     */
+    public void clear() {
+        tasks = new ArrayList<>();
+    }
+
+
 }

@@ -9,12 +9,19 @@ public class Duke {
     private Ui ui;
     private static boolean isTerminating;
 
+    /**
+     * Instantiates Storage, TaskBank and Ui  of the programme
+     * @param filePath the filePath which duke.txt is stored
+     */
     public Duke(String filePath) {
         ui = new Ui();
         taskBank = new TaskBank();
         storage = new Storage(filePath, taskBank, ui);
     }
 
+    /**
+     * Runs Duke program
+     */
     public void run() {
         try (Scanner sc = new Scanner(System.in)) {
             String fullCommand;
@@ -35,6 +42,10 @@ public class Duke {
         new Duke("./data/duke.txt").run();
     }
 
+    /**
+     * Changes the variable isTerminating to true
+     * Used to end the while loop that continuously read user input
+     */
     public static void terminateDuke() {
         isTerminating = true;
     }
