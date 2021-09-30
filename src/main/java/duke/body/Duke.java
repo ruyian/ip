@@ -1,3 +1,5 @@
+package duke.body;
+
 import duke.exception.DukeException;
 import duke.task.TaskBank;
 
@@ -8,9 +10,11 @@ public class Duke {
     private TaskBank taskBank;
     private Ui ui;
     private static boolean isTerminating;
+    private static String textFilePath = "./data/duke.txt";
 
     /**
      * Instantiates Storage, TaskBank and Ui  of the programme
+     *
      * @param filePath the filePath which duke.txt is stored
      */
     public Duke(String filePath) {
@@ -20,7 +24,7 @@ public class Duke {
     }
 
     /**
-     * Runs Duke program
+     * Runs the Duke program
      */
     public void run() {
         try (Scanner sc = new Scanner(System.in)) {
@@ -28,18 +32,20 @@ public class Duke {
             while (!isTerminating) {
                 fullCommand = ui.readInput(sc);
                 ui.printDashLine();
-                Action action = Parser.parseCommand(fullCommand);
-                Command.perform(fullCommand, action, ui, storage, taskBank);
+                try {
+                    Action action = Parser.parseCommand(fullCommand);
+                    Command.perform(fullCommand, action, ui, storage, taskBank);
+                } catch (DukeException e) {
+                    ui.showErrorMessage(e);
+                }
                 ui.printDashLine();
             }
-        } catch (DukeException e) {
-            ui.showErrorMessage(e);
         }
     }
 
     public static void main(String[] args) {
         isTerminating = false;
-        new Duke("./data/duke.txt").run();
+        new Duke(textFilePath).run();
     }
 
     /**

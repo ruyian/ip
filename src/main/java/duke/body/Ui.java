@@ -1,7 +1,7 @@
-import duke.task.Task;
-import duke.task.TaskBank;
+package duke.body;
 
-import java.util.ArrayList;
+import duke.task.Task;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -56,18 +56,6 @@ public class Ui {
     public String readInput(Scanner sc) {
         return sc.nextLine();
     }
-
-    public static ArrayList<Task> findMatchingTask(TaskBank givenBank, String keyword) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : givenBank.getTasks()) {
-            String lowercaseTaskDescription = task.getDescription().toLowerCase();
-            if (lowercaseTaskDescription.contains(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
-    }
-
 
     public void showLoadMessage() {
         printDashLine();
