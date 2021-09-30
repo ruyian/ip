@@ -22,7 +22,9 @@ public class Event extends Task {
         return super.toString()+ " (" + getEventDateString() + ")";
     }
 
-    // for the use of exporting into a text
+    /** Returns a formatted String that to be stored in file, duke.txt
+     * @return the formatted String
+     */
     public String describeInFile() {
         return getDescription() + " | " + getEventDateString();
     }

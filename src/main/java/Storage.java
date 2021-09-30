@@ -30,6 +30,10 @@ public class Storage {
         }
     }
 
+    /** Exports the content in the TaskBank to duke.txt
+     *
+     * @param tb - the TaskBank which tasks are exported from
+     */
     public void exportTasks(TaskBank tb) {
         StringBuffer taskTextString = new StringBuffer();
         for (Task task : tb.getTasks()) {
@@ -49,6 +53,10 @@ public class Storage {
         }
     }
 
+    /** Loads taks from file to target TaskBank
+     *
+     * @param tb TaskBank which tasks are loaded to
+     */
     public void loadTasks(TaskBank tb) {
         File f = new File(this.filePath);
         try (Scanner sc = new Scanner(f)) {
