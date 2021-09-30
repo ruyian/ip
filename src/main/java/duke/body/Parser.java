@@ -1,10 +1,12 @@
+package duke.body;
+
 import duke.exception.DukeException;
 import duke.exception.EmptyInputException;
 import duke.exception.IrregularInputException;
-import duke.task.Task;
 
 public class Parser {
-    /** Parses user input to corresponding command enum based on user input.
+    /**
+     * Parses user input to corresponding command enum based on user input.
      *
      * @param sentence Raw String taken from user input
      * @return an action to be taken by Command
@@ -12,7 +14,7 @@ public class Parser {
      */
     public static Action parseCommand(String sentence) throws DukeException {
         if (sentence.isEmpty()) {
-            throw new EmptyInputException("Empty input! Try again (o|o)\n");
+            throw new EmptyInputException("Empty input! Try again (o|o)");
         } else if (sentence.equals("bye")) {
             return Action.BYE;
         } else if (sentence.equals("list")) {
@@ -32,11 +34,12 @@ public class Parser {
         } else if (sentence.startsWith("find")) {
             return Action.FIND;
         } else {
-            return Action.UNKNOWN_ACTION;
+            throw new IrregularInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-( \nPlease try again!");
         }
     }
 
-    /** Parse the index of the tasks the user wants to done / delete
+    /**
+     * Parse the index of the tasks the user wants to done / delete
      *
      * @param sentence the raw String from user input of "done" and "delete"
      * @return targetIndex,
@@ -52,7 +55,8 @@ public class Parser {
         }
     }
 
-    /** Parse the keyword of the looks for
+    /**
+     * Parse the keyword of the user looks for
      *
      * @param sentence, raw user input
      * @return the keyword that the user looks for
@@ -73,7 +77,8 @@ public class Parser {
         }
     }
 
-    /** Parse the description of task from user input
+    /**
+     * Parse the description of task from user input
      *
      * @param sentence raw user input
      * @return the description of the task
@@ -82,5 +87,16 @@ public class Parser {
         int spaceIndex = sentence.indexOf(' ');
         String description = sentence.substring(spaceIndex + 1);
         return description;
+    }
+
+    /**
+     * Parse the "/" used in event and deadline input that separates the description
+     * and date
+     *
+     * @param sentence - raw user input
+     * @return the index at which "/" is found
+     */
+    public static int parseSlashIndex(String sentence) {
+        return sentence.indexOf("/");
     }
 }

@@ -1,3 +1,5 @@
+package duke.body;
+
 import duke.exception.DukeException;
 import duke.exception.IrregularInputException;
 import duke.exception.RepeatedCompletionException;
@@ -6,21 +8,20 @@ import duke.task.TaskBank;
 
 import java.util.ArrayList;
 
+
 public class Command {
-    /** Perform action from users
+    /**
+     * Perform action from users
      *
      * @param sentence the raw user input
-     * @param action the actino parsed from user input by Parser
-     * @param ui the UI from the Duke
-     * @param storage the storage handler of duke.txt
-     * @param tb TaskBank of all current tasks
+     * @param action   the actino parsed from user input by Parser
+     * @param ui       the UI from the Duke
+     * @param storage  the storage handler of duke.txt
+     * @param tb       TaskBank of all current tasks
      * @throws DukeException if unable to find tasks, or index out of range
      */
     public static void perform(String sentence, Action action, Ui ui, Storage storage, TaskBank tb) throws DukeException {
         switch (action) {
-        case UNKNOWN_ACTION:
-            System.out.printf("☹ OOPS!!! I'm sorry, but I don't know what that means :-( %nPlease try again!%n");
-            break;
         case CLEAR:
             clear(tb);
             ui.showClearMessage();
@@ -62,7 +63,8 @@ public class Command {
 
     }
 
-    /** Remove all tasks from the taskbank
+    /**
+     * Remove all tasks from the taskbank
      *
      * @param tb taskbank to be cleared
      */

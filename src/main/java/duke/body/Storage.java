@@ -1,3 +1,5 @@
+package duke.body;
+
 import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
@@ -30,7 +32,8 @@ public class Storage {
         }
     }
 
-    /** Exports the content in the TaskBank to duke.txt
+    /**
+     * Exports the content in the TaskBank to duke.txt
      *
      * @param tb - the TaskBank which tasks are exported from
      */
@@ -53,7 +56,8 @@ public class Storage {
         }
     }
 
-    /** Loads taks from file to target TaskBank
+    /**
+     * Loads taks from file to target TaskBank
      *
      * @param tb TaskBank which tasks are loaded to
      */
@@ -70,6 +74,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Reads a specific line in the text file, and add the parsed Task to the given taskbank
+     *
+     * @param taskLine - a specific line of String of the text file
+     * @param tb - the given taskbank where tasks are to be added
+     * @throws IOException if input or outputs has error
+     */
     private void loadTaskLine(String taskLine, TaskBank tb) throws IOException {
         String taskTypeString = taskLine.substring(0, 1);
         int firstDivisor = taskLine.indexOf("|", 1);

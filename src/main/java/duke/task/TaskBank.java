@@ -9,6 +9,10 @@ public class TaskBank {
         tasks = new ArrayList<>();
     }
 
+    /** Generates a taskBank object using a given arraylist of tasks
+     *
+     * @param givenTasks - ArrayList of tasks that to be filled in the new TaskBank
+     */
     public TaskBank(ArrayList<Task> givenTasks){
         tasks = givenTasks;
     }
@@ -54,6 +58,9 @@ public class TaskBank {
         return newTask;
     }
 
+    /** Gets the task bank size
+     * @return the size of this taskbank
+     */
     public int getTaskSize() {
         return tasks.size();
     }
@@ -97,6 +104,13 @@ public class TaskBank {
         return deletedTask;
     }
 
+    /**
+     * Finds all keyword-matched tasks in a given TaskBank
+     *
+     * @param givenBank the taskbank that is searched for
+     * @param keyword the keyword for finding matching tasks
+     * @return an ArrayList of matched tasks
+     */
     public static ArrayList<Task> findMatchingTask(TaskBank givenBank, String keyword) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : givenBank.getTasks()) {
@@ -108,9 +122,11 @@ public class TaskBank {
         return matchingTasks;
     }
 
-    /** Clears the content of the the Task Bank
+    /**
+     * Clears the content of this Taskbank and replaces tasks with a new, empty ArrayList
      */
     public void clear() {
+        tasks.clear();
         tasks = new ArrayList<>();
     }
 
