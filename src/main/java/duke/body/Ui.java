@@ -18,6 +18,11 @@ public class Ui {
     }
 
 
+    /**
+     * Prints out the message of caught exception
+     *
+     * @param e the caught exception
+     */
     public void showErrorMessage(Exception e) {
         System.out.println(e.getMessage());
     }
