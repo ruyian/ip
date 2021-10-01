@@ -11,7 +11,8 @@ public class TaskBank {
         tasks = new ArrayList<>();
     }
 
-    /** Generates a taskBank object using a given arraylist of tasks
+    /**
+     * Generates a taskBank object using a given arraylist of tasks
      *
      * @param givenTasks - ArrayList of tasks that to be filled in the new TaskBank
      */
@@ -24,7 +25,8 @@ public class TaskBank {
     }
 
 
-    /** Adds a todo to taskbank
+    /**
+     * Adds a todo to taskbank
      *
      * Creates a new todo task from the raw String input
      * @param todoInput
@@ -36,7 +38,8 @@ public class TaskBank {
         return newTask;
     }
 
-    /** Adds an event to taskbank
+    /**
+     * Adds an event to taskbank
      *
      * Creates a new event task from the raw String input
      * @param eventInput
@@ -48,7 +51,8 @@ public class TaskBank {
         return newTask;
     }
 
-    /** Adds a deadline to taskbank
+    /**
+     * Adds a deadline to taskbank
      *
      * Creates a new event task from the raw String input
      * @param deadlilneInput
@@ -78,7 +82,8 @@ public class TaskBank {
         }
     }
 
-    /** Returns  the target task from the TaskBank by specific index
+    /**
+     * Returns  the target task from the TaskBank by specific index
      *
      * @param taskIndex the index of target task
      * @return the target index
@@ -91,7 +96,8 @@ public class TaskBank {
         return tasks.get(taskIndex);
     }
 
-    /** Removes the target task from the TaskBank
+    /**
+     * Removes the target task from the TaskBank
      *
      * @param taskIndex the index of target task
      * @return the removed Task
