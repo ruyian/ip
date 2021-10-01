@@ -20,7 +20,7 @@ Duke is a Command-Line Interface application. It is used for recording and track
 ## Before we start
 
 1. Install Java version `11` on your computer
-2. Find the lastest Duke.jar by clicking [me](https://github.com/ruyian/ip/releases).
+2. Download the lastest Duke.jar by clicking [me](https://github.com/ruyian/ip/releases/download/A-Release/ip.jar)
 3. Copy Duke.jar to the target directory as the home folder
 4. Open terminal and cd to the home folder
 5. Run the program using `java -jar Duke.jar` command.
