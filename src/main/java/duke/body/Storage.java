@@ -1,5 +1,6 @@
 package duke.body;
 
+import duke.exception.DukeException;
 import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
@@ -13,6 +14,8 @@ import java.util.Scanner;
 public class Storage {
     private String filePath;
     private File file;
+    private final String SEPARATOR_WITH_SPACE = " | ";
+    private final String SEPARATOR = "|";
 
     Storage(String filePath, TaskBank tb, Ui ui) {
         this.filePath = filePath;
@@ -25,7 +28,7 @@ public class Storage {
             directoryPath.mkdir();
             try {
                 file.createNewFile();
-            } catch(IOException e){
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
             ui.showGreeting();
@@ -41,9 +44,9 @@ public class Storage {
         StringBuffer taskTextString = new StringBuffer();
         for (Task task : tb.getTasks()) {
             taskTextString.append(task.getTaskType());
-            taskTextString.append(" | ");
+            taskTextString.append(SEPARATOR_WITH_SPACE);
             taskTextString.append(task.getDone() ? "1" : "0");
-            taskTextString.append(" | ");
+            taskTextString.append(SEPARATOR_WITH_SPACE);
             taskTextString.append(task.describeInFile());
             taskTextString.append("\r\n");
         }
@@ -71,6 +74,8 @@ public class Storage {
             System.out.println("duke.txt is not found");
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        } catch (RepeatedCompletionException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -78,46 +83,34 @@ public class Storage {
      * Reads a specific line in the text file, and add the parsed Task to the given taskbank
      *
      * @param taskLine - a specific line of String of the text file
-     * @param tb - the given taskbank where tasks are to be added
+     * @param tb       - the given taskbank where tasks are to be added
      * @throws IOException if input or outputs has error
      */
-    private void loadTaskLine(String taskLine, TaskBank tb) throws IOException {
+    private void loadTaskLine(String taskLine, TaskBank tb) throws IOException, RepeatedCompletionException {
         String taskTypeString = taskLine.substring(0, 1);
-        int firstDivisor = taskLine.indexOf("|", 1);
-        int secondDivisor = taskLine.indexOf("|", firstDivisor + 1);
-        int thirdDivisor = taskLine.indexOf("|", secondDivisor + 1);
-        if (thirdDivisor == -1) { // todo type
-            tb.addTodo(taskLine.substring(secondDivisor + 1).trim());
+        int firstDivisor = taskLine.indexOf(SEPARATOR, 1);
+        int secondDivisor = taskLine.indexOf(SEPARATOR, firstDivisor + 1);
+        int thirdDivisor = taskLine.indexOf(SEPARATOR, secondDivisor + 1);
+        String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
+        Task newTask;
+        if (taskTypeString.equals("T")) {
+            String todoInput = taskLine.substring(secondDivisor + 1).trim();
+            newTask = tb.addTodo(todoInput);
+        } else if (taskTypeString.equals("D")) {
+            String deadLineInput = taskLine.substring(secondDivisor + 1).trim();
+            newTask = tb.addDeadline(deadLineInput.replace("| ", "/"));
+        } else if (taskTypeString.equals("E")) {
+            String eventLineInput = taskLine.substring(secondDivisor + 1).trim();
+            newTask = tb.addEvent(eventLineInput.replace("| ", "/"));
         } else {
-            if (taskTypeString.equals("D")) {
-                String deadLineInput = taskLine.substring(secondDivisor + 1).trim();
-                String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
-                Task newTask = tb.addDeadline(deadLineInput.replace("| ", "/"));
-                if (taskCompletionStatus.equals("1")) {
-                    try {
-                        newTask.markAsDone();
-                    } catch (RepeatedCompletionException e) {
-                        // This is left blank intentinally
-                        // as from tasks are generated from
-                        // local files, and will not be completed repeatedly
-                    }
-                }
+            throw new IOException("Wrong type from data loader. File is corrupted");
+        }
 
-            } else if (taskTypeString.equals("E")) {
-                String eventLineInput = taskLine.substring(secondDivisor + 1).trim();
-                String taskCompletionStatus = taskLine.substring(firstDivisor + 2, secondDivisor).trim();
-                Task newTask = tb.addEvent(eventLineInput.replace("| ", "/"));
-                if (taskCompletionStatus.equals("1")) {
-                    try {
-                        newTask.markAsDone();
-                    } catch (RepeatedCompletionException e) {
-                        // This is left blank intentinally
-                        // as from tasks are generated from
-                        // local files, and will not be completed repeatedly
-                    }
-                }
-            } else {
-                throw new IOException("Wrong type from data loader");
+        if (taskCompletionStatus.equals("1")) {
+            try {
+                newTask.markAsDone();
+            } catch (RepeatedCompletionException e) {
+                throw new RepeatedCompletionException("Repeated completion on loading");
             }
         }
     }

@@ -6,6 +6,11 @@ import duke.body.Parser;
 public class Event extends Task {
     private String eventDateString;
 
+    /**
+     * creates an event with description and date with users input
+     *
+     * @param description - users' input
+     */
     public Event(String description) {
         super();
         int indexDivider = Parser.parseSlashIndex(description);
@@ -16,6 +21,11 @@ public class Event extends Task {
         this.taskType = TaskType.EVENT;
     }
 
+    /**
+     * Returns the date stored of the event
+     *
+     * @return date of event
+     */
     public String getEventDateString() {
         return eventDateString;
     }

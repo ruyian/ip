@@ -10,7 +10,7 @@ public class Duke {
     private TaskBank taskBank;
     private Ui ui;
     private static boolean isTerminating;
-    private static String textFilePath = "./data/duke.txt";
+    private static final String TEXT_FILE_PATH= "./data/duke.txt";
 
     /**
      * Instantiates Storage, TaskBank and Ui  of the programme
@@ -45,7 +45,7 @@ public class Duke {
 
     public static void main(String[] args) {
         isTerminating = false;
-        new Duke(textFilePath).run();
+        new Duke(TEXT_FILE_PATH).run();
     }
 
     /**

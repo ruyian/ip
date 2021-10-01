@@ -1,7 +1,8 @@
 package duke.body;
 
 import duke.exception.DukeException;
-import duke.exception.IrregularInputException;
+import duke.exception.DukeIndexOutOfBoundException;
+import duke.exception.IllegalInputException;
 import duke.exception.RepeatedCompletionException;
 import duke.task.Task;
 import duke.task.TaskBank;
@@ -18,7 +19,7 @@ public class Command {
      * @param ui       the UI from the Duke
      * @param storage  the storage handler of duke.txt
      * @param tb       TaskBank of all current tasks
-     * @throws DukeException if unable to find tasks, or index out of range
+     * @throws DukeException if unable to find tasks by an invalid index or wrong Action is keyyed in
      */
     public static void perform(String sentence, Action action, Ui ui, Storage storage, TaskBank tb) throws DukeException {
         switch (action) {
@@ -58,9 +59,8 @@ public class Command {
             listAllTask(matchedTaskBank);
             break;
         default:
-            System.out.println("ERROR IN COMMMAND");
+            throw new DukeException("Error in parsing command");
         }
-
     }
 
     /**
@@ -72,7 +72,7 @@ public class Command {
         tb.clear();
     }
 
-    private static Task deleteTask(String deleteStament, TaskBank tb) throws IrregularInputException {
+    private static Task deleteTask(String deleteStament, TaskBank tb) throws DukeIndexOutOfBoundException, IllegalInputException {
         int targetIndex = Parser.parseIndex(deleteStament);
         Task deletedTask = tb.removeTask(targetIndex);
         return deletedTask;
@@ -105,7 +105,7 @@ public class Command {
         return newTask;
     }
 
-    private static TaskBank findTask(String input, TaskBank givenTaskBank) throws IrregularInputException {
+    private static TaskBank findTask(String input, TaskBank givenTaskBank) throws IllegalInputException {
         String keywordInput = Parser.parseKeyWord(input);
         ArrayList<Task> matchingTasks = TaskBank.findMatchingTask(givenTaskBank, keywordInput);
         if (matchingTasks.isEmpty()) {
@@ -115,7 +115,7 @@ public class Command {
         }
     }
 
-    private static Task completeTask(TaskBank tb, String sentence) throws RepeatedCompletionException, NumberFormatException, IrregularInputException {
+    private static Task completeTask(TaskBank tb, String sentence) throws RepeatedCompletionException, NumberFormatException, DukeIndexOutOfBoundException, IllegalInputException {
         int targetIndex = Parser.parseIndex(sentence);
         Task completedTask = tb.searchTask(targetIndex);
         completedTask.markAsDone();

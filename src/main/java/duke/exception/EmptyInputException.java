@@ -1,9 +1,9 @@
 package duke.exception;
 
 /**
- * A subclass of IrregularInputException, when an illegal input of empty input is keyyed in
+ * A subclass of IllegalInputException, when an illegal input of empty input is keyyed in
  */
-public class EmptyInputException extends IrregularInputException {
+public class EmptyInputException extends IllegalInputException {
 
     public EmptyInputException() {
         super();

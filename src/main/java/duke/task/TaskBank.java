@@ -1,5 +1,7 @@
 package duke.task;
 
+import duke.exception.DukeIndexOutOfBoundException;
+
 import java.util.ArrayList;
 
 public class TaskBank {
@@ -65,8 +67,8 @@ public class TaskBank {
         return tasks.size();
     }
 
-    /** Prints all tasks in TaskBank
-     *
+    /**
+     * Prints all tasks in TaskBank
      */
     public void printList() {
         int i = 0;
@@ -95,7 +97,7 @@ public class TaskBank {
      * @return the removed Task
      * @throws IndexOutOfBoundsException if index provided is out of bound
      */
-    public Task removeTask(int taskIndex) throws IndexOutOfBoundsException {
+    public Task removeTask(int taskIndex) throws DukeIndexOutOfBoundException {
         if (taskIndex < 0 || taskIndex > this.getTaskSize()) {
             throw new IndexOutOfBoundsException("Ouch! Index is out of range. Try again!\n");
         }

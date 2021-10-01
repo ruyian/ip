@@ -2,7 +2,7 @@ package duke.body;
 
 import duke.exception.DukeException;
 import duke.exception.EmptyInputException;
-import duke.exception.IrregularInputException;
+import duke.exception.IllegalInputException;
 
 public class Parser {
     /**
@@ -34,7 +34,7 @@ public class Parser {
         } else if (sentence.startsWith("find")) {
             return Action.FIND;
         } else {
-            throw new IrregularInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-( \nPlease try again!");
+            throw new IllegalInputException("☹ OOPS!!! I'm sorry, but I don't know what that means :-( \nPlease try again!");
         }
     }
 
@@ -43,15 +43,15 @@ public class Parser {
      *
      * @param sentence the raw String from user input of "done" and "delete"
      * @return targetIndex,
-     * @throws IrregularInputException if an int cannot be parsed
+     * @throws IllegalInputException if an int cannot be parsed
      */
-    public static int parseIndex(String sentence) throws IrregularInputException {
+    public static int parseIndex(String sentence) throws IllegalInputException {
         String[] words = sentence.split(" ");
         try {
             int targetIndex = Integer.parseInt(words[1]) - 1;
             return targetIndex;
         } catch (NumberFormatException nfe) {
-            throw new IrregularInputException("Not a number. Try again!");
+            throw new IllegalInputException("Not a number. Try again!");
         }
     }
 
@@ -60,9 +60,9 @@ public class Parser {
      *
      * @param sentence, raw user input
      * @return the keyword that the user looks for
-     * @throws IrregularInputException if bad keyword or no keyword is keyyed in
+     * @throws IllegalInputException if bad keyword or no keyword is keyyed in
      */
-    public static String parseKeyWord(String sentence) throws IrregularInputException {
+    public static String parseKeyWord(String sentence) throws IllegalInputException {
         try {
             int spaceIndex = sentence.indexOf(' ');
             if (spaceIndex == -1) {
@@ -71,9 +71,9 @@ public class Parser {
             String keyWord = sentence.substring(spaceIndex + 1);
             return keyWord;
         } catch (NumberFormatException nfe) {
-            throw new IrregularInputException("Bad keyword!");
+            throw new IllegalInputException("Bad keyword!");
         } catch (IndexOutOfBoundsException ie) {
-            throw new IrregularInputException("You have not keyed in any keyword");
+            throw new IllegalInputException("You have not keyed in any keyword");
         }
     }
 

@@ -5,6 +5,11 @@ import duke.body.Parser;
 public class Deadline extends Task {
     private String deadlineDateString;
 
+    /**
+     * creates a deadline with description and date with users input
+     *
+     * @param description - users' input
+     */
     public Deadline(String description) {
         super();
         int indexDivider = Parser.parseSlashIndex(description);
@@ -15,6 +20,11 @@ public class Deadline extends Task {
         this.taskType = TaskType.DEADLINE;
     }
 
+    /**
+     * Returns the date stored of the deadline
+     *
+     * @return date of deadline
+     */
     public String getDeadlineDateString() {
         return deadlineDateString;
     }

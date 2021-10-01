@@ -54,6 +54,11 @@ public abstract class Task {
         return this.description;
     }
 
+    /**
+     * gets the status of the task, if it is done or not
+     *
+     * @return a boolean value reflecting whether the task is done
+     */
     public boolean getDone() {
         return this.isDone;
     }
